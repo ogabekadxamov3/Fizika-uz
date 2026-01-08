@@ -23,7 +23,7 @@
     } else {
       output.textContent = JSON.stringify(user, null, 2);
 
-      fetch("http://localhost:8080/auth/telegram", {
+      fetch("https://d25621eabb93.ngrok-free.app/auth/telegram", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
