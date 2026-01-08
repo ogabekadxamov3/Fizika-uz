@@ -18,22 +18,33 @@
 
     const user = tg.initDataUnsafe?.user;
 
-    document.getElementById("output").textContent =
-      user
-        ? JSON.stringify(user, null, 2)
-        : "Telegram user topilmadi";
-    if (user) {
-  fetch("http://localhost:8080/health", {
-    method: "GET",
-  })
-    .then(res => res.text())
-    .then(data => {
-      console.log("Backend javobi:", data);
-    })
-    .catch(err => {
-      console.log("Backend error:", err);
-    });
-}
+    const output = document.getElementById("output");
+
+    if (!user) {
+      output.textContent = "Telegram user topilmadi";
+    } else {
+      output.textContent = JSON.stringify(user, null, 2);
+
+      // REAL BACKEND GA USER YUBORISH
+      fetch("http://localhost:8080/auth/telegram", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          id: user.id,
+          username: user.username,
+          first_name: user.first_name
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log("Backend javobi:", data);
+        })
+        .catch(err => {
+          console.error("Backend error:", err);
+        });
+    }
   </script>
 </body>
 </html>
