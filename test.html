@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fizika uz — Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+    }
+
+    h2 {
+      margin-bottom: 8px;
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+
+    .option {
+      display: block;
+      margin: 6px 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:active {
+      background: #1e7e34;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 id="title">Test</h2>
+
+  <div id="questions"></div>
+
+  <button onclick="submitTest()">Yuborish</button>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+
+    // URL dan test kodini olish
+    const params = new URLSearchParams(window.location.search);
+    const testCode = params.get("code");
+
+    document.getElementById("title").textContent =
+      "Test kodi: " + (testCode || "Noma’lum");
+
+    // MOCK TEST (keyin backend’dan keladi)
+    const test = {
+      questions: [
+        {
+          id: 1,
+          text: "Yerning tortishish tezlanishi nechaga teng?",
+          options: ["9.8 m/s²", "10 m/s²", "8.9 m/s²", "7.5 m/s²"]
+        },
+        {
+          id: 2,
+          text: "Tok kuchi qaysi birlikda o‘lchanadi?",
+          options: ["Volt", "Amper", "Om", "Vatt"]
+        }
+      ]
+    };
+
+    const answers = {};
+
+    function render() {
+      const container = document.getElementById("questions");
+
+      test.questions.forEach(q => {
+        const div = document.createElement("div");
+        div.className = "question";
+
+        const title = document.createElement("p");
+        title.textContent = q.text;
+        div.appendChild(title);
+
+        q.options.forEach(opt => {
+          const label = document.createElement("label");
+          label.className = "option";
+
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = "q" + q.id;
+          input.value = opt;
+          input.onchange = () => {
+            answers[q.id] = opt;
+          };
+
+          label.appendChild(input);
+          label.append(" " + opt);
+
+          div.appendChild(label);
+        });
+
+        container.appendChild(div);
+      });
+    }
+
+    function submitTest() {
+      if (Object.keys(answers).length < test.questions.length) {
+        alert("Barcha savollarga javob bering");
+        return;
+      }
+
+      console.log("Yuborilgan javoblar:", answers);
+      alert("Test yuborildi (hozircha mock)");
+    }
+
+    render();
+  </script>
+
+</body>
+</html>
