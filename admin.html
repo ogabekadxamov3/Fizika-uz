@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fizika uz — Admin panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+    }
+
+    h2 {
+      margin-bottom: 12px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+
+    button {
+      padding: 10px;
+      font-size: 15px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .question {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Admin panel — Test yaratish</h2>
+
+  <input id="testTitle" type="text" placeholder="Test nomi" />
+
+  <div id="questions"></div>
+
+  <button onclick="addQuestion()">Savol qo‘shish</button>
+  <button onclick="saveTest()">Testni saqlash</button>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+
+    let questions = [];
+
+    function addQuestion() {
+      const qId = questions.length + 1;
+
+      const q = {
+        id: qId,
+        text: "",
+        options: ["", "", "", ""]
+      };
+
+      questions.push(q);
+      render();
+    }
+
+    function render() {
+      const container = document.getElementById("questions");
+      container.innerHTML = "";
+
+      questions.forEach((q, index) => {
+        const div = document.createElement("div");
+        div.className = "question";
+
+        const title = document.createElement("input");
+        title.placeholder = "Savol matni";
+        title.value = q.text;
+        title.oninput = e => q.text = e.target.value;
+        div.appendChild(title);
+
+        q.options.forEach((opt, i) => {
+          const input = document.createElement("input");
+          input.placeholder = "Variant " + (i + 1);
+          input.value = opt;
+          input.oninput = e => q.options[i] = e.target.value;
+          div.appendChild(input);
+        });
+
+        container.appendChild(div);
+      });
+    }
+
+    function saveTest() {
+      if (!document.getElementById("testTitle").value) {
+        alert("Test nomini kiriting");
+        return;
+      }
+
+      if (questions.length === 0) {
+        alert("Kamida bitta savol qo‘shing");
+        return;
+      }
+
+      console.log("TEST:", {
+        title: document.getElementById("testTitle").value,
+        questions
+      });
+
+      alert("Test saqlandi (hozircha mock)");
+    }
+  </script>
+
+</body>
+</html>
