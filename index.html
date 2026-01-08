@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fizika uz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <h1>Fizika uz Mini App</h1>
+
+  <pre id="output">Yuklanmoqda...</pre>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+
+    tg.ready();
+
+    const user = tg.initDataUnsafe?.user;
+
+    document.getElementById("output").textContent =
+      user
+        ? JSON.stringify(user, null, 2)
+        : "Telegram user topilmadi";
+  </script>
+</body>
+</html>
