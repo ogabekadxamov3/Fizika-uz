@@ -13,11 +13,9 @@
 
   <script>
     const tg = window.Telegram.WebApp;
-
     tg.ready();
 
     const user = tg.initDataUnsafe?.user;
-
     const output = document.getElementById("output");
 
     if (!user) {
@@ -25,7 +23,6 @@
     } else {
       output.textContent = JSON.stringify(user, null, 2);
 
-      // REAL BACKEND GA USER YUBORISH
       fetch("http://localhost:8080/auth/telegram", {
         method: "POST",
         headers: {
@@ -40,9 +37,16 @@
         .then(res => res.json())
         .then(data => {
           console.log("Backend javobi:", data);
+
+          if (data.role === "admin") {
+            output.textContent = "Admin panelga yo‘naltirilmoqda...";
+          } else {
+            output.textContent = "Testlar sahifasiga yo‘naltirilmoqda...";
+          }
         })
         .catch(err => {
           console.error("Backend error:", err);
+          output.textContent = "Backend bilan aloqa xatosi";
         });
     }
   </script>
