@@ -22,6 +22,18 @@
       user
         ? JSON.stringify(user, null, 2)
         : "Telegram user topilmadi";
+    if (user) {
+  fetch("http://localhost:8080/health", {
+    method: "GET",
+  })
+    .then(res => res.text())
+    .then(data => {
+      console.log("Backend javobi:", data);
+    })
+    .catch(err => {
+      console.log("Backend error:", err);
+    });
+}
   </script>
 </body>
 </html>
