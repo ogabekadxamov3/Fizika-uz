@@ -21,7 +21,7 @@
     if (!user) {
       output.textContent = "Telegram user topilmadi";
     } else {
-      output.textContent = JSON.stringify(user, null, 2);
+      output.textContent = "Tekshirilmoqda...";
 
       fetch("https://d25621eabb93.ngrok-free.app/auth/telegram", {
         method: "POST",
@@ -39,9 +39,9 @@
           console.log("Backend javobi:", data);
 
           if (data.role === "admin") {
-            output.textContent = "Admin panelga yo‘naltirilmoqda...";
+            window.location.href = "admin.html";
           } else {
-            output.textContent = "Testlar sahifasiga yo‘naltirilmoqda...";
+            window.location.href = "tests.html";
           }
         })
         .catch(err => {
